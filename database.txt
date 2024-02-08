@@ -1,0 +1,18 @@
+1. users
+  id
+  name
+  email
+  password
+
+2. habits
+  id
+  user_id
+  name
+  interval
+  total_repetitions
+  status
+
+3. daily_activities
+  id
+  habit_id
+  date
