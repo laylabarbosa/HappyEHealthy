@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "972850769168",
+    "project_id": "happyehealthy-23718",
+    "storage_bucket": "happyehealthy-23718.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972850769168:android:1c362af1e3b1e87bbf0995",
+        "android_client_info": {
+          "package_name": "com.example.happyehealthy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMRzcIprzRcXj61Z4ubisINAr32bOp3Yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
