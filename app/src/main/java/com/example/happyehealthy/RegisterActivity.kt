@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.happyehealthy.MainActivity.Companion.auth
 import com.example.happyehealthy.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.edtxtAccPass.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty())
             {
-                MainActivity.auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+                auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
                     if (it.isSuccessful){
                         Toast.makeText(this, "Account created successfully", Toast.LENGTH_LONG).show()
                         //intent to home activity
