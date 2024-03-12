@@ -26,7 +26,7 @@ class RegisterActivity : AppCompatActivity() {
                     if (it.isSuccessful){
                         Toast.makeText(this, "Account created successfully", Toast.LENGTH_LONG).show()
                         //intent to home activity
-                        startActivity(Intent(this, MainActivity :: class.java))
+                        startActivity(Intent(this, CreateGoalsActivity :: class.java))
                         finish()
                     }
                 }.addOnFailureListener {

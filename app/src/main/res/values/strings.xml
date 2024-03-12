@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HappyEHealthy</string>
+    <string name="add_habit">Add Habit</string>
+    <string name="track_goals">Track Goals</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="create_account">Create Account</string>
 </resources>
