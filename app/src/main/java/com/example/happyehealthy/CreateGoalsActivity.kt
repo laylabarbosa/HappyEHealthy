@@ -1,5 +1,7 @@
 package com.example.happyehealthy
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -8,6 +10,8 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -17,7 +21,9 @@ class CreateGoalsActivity : AppCompatActivity() {
     private lateinit var spinnerFrequency: Spinner
     private lateinit var buttonAddHabit: Button
     private lateinit var buttonTrackGoals: Button
+    private lateinit var btnLogout: Button
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_goals)
@@ -27,6 +33,7 @@ class CreateGoalsActivity : AppCompatActivity() {
         spinnerFrequency = findViewById(R.id.spinnerFrequency)
         buttonAddHabit = findViewById(R.id.buttonAddHabit)
         buttonTrackGoals = findViewById(R.id.buttonTrackGoals)
+        btnLogout = findViewById(R.id.btn_logout)
 
 
         // Populate spinner with frequencies
@@ -78,7 +85,7 @@ class CreateGoalsActivity : AppCompatActivity() {
             val emailKey = email!!.replace(".", ",")
 
             // Send the data to Firebase under the user's email
-            val databaseReference = FirebaseDatabase.getInstance().reference.child("users").child(emailKey).child("goals").child(name)
+            val databaseReference = FirebaseDatabase.getInstance().reference.child("users").child(emailKey).child(name)
             databaseReference.setValue(habitsList)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Goals tracked successfully", Toast.LENGTH_SHORT).show()
@@ -86,6 +93,12 @@ class CreateGoalsActivity : AppCompatActivity() {
                 .addOnFailureListener {
                     Toast.makeText(this, "Failed to track goals: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
+        }
+
+        btnLogout.setOnClickListener {
+            Firebase.auth.signOut()
+            startActivity(Intent(this, MainActivity :: class.java))
+            finish()
         }
 
     }

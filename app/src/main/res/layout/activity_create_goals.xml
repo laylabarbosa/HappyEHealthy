@@ -55,4 +55,14 @@
         android:layout_marginTop="16dp"
         android:text="@string/track_goals"/>
 
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonTrackGoals"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/logout"
+        />
+
 </RelativeLayout>

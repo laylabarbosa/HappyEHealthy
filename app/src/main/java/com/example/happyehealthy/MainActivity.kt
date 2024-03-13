@@ -27,9 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth= FirebaseAuth.getInstance()
-//        database= FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         database = FirebaseDatabase.getInstance()
-//        val myRef = database.getReference("your_reference")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -46,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                             val emailKey = email.replace(".", ",")
 
                             // Check if the user has a corresponding entry in the database for habits
-                            MainActivity.database.getReference("users").child(emailKey).child("goals").addListenerForSingleValueEvent(object :
+                            MainActivity.database.getReference("users").child(emailKey).addListenerForSingleValueEvent(object :
                                 ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                                     if (dataSnapshot.exists()) {

@@ -5,4 +5,7 @@
     <string name="enter_name">Enter Name</string>
     <string name="create_account">Create Account</string>
     <string name="enter_habit">Enter Habit</string>
+    <string name="logout">Logout</string>
+    <string name="hi_user_good_morning">Hi User, Good Morning!</string>
+    <string name="date_and_time">Date and Time</string>
 </resources>
