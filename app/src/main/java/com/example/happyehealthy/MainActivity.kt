@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                     if (it.isSuccessful){
                         Toast.makeText(this, "Login Successfull", Toast.LENGTH_LONG).show()
                         //intent to home activity
-                        startActivity(Intent(this, HomeActivity :: class.java))
+                        startActivity(Intent(this, CreateGoalsActivity :: class.java))
                         finish()
                     }
                 }.addOnFailureListener {

@@ -4,4 +4,5 @@
     <string name="track_goals">Track Goals</string>
     <string name="enter_name">Enter Name</string>
     <string name="create_account">Create Account</string>
+    <string name="enter_habit">Enter Habit</string>
 </resources>

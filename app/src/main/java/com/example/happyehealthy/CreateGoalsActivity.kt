@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
-import com.example.happyehealthy.R
 
 
 class CreateGoalsActivity : AppCompatActivity() {
     private lateinit var editTextName: EditText
-    private lateinit var spinnerHabit: Spinner
+    private lateinit var editHabit: EditText
     private lateinit var spinnerFrequency: Spinner
     private lateinit var buttonAddHabit: Button
     private lateinit var buttonTrackGoals: Button
@@ -22,28 +22,33 @@ class CreateGoalsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_goals)
 
         editTextName = findViewById(R.id.editTextName)
-        spinnerHabit = findViewById(R.id.spinnerHabit)
+        editHabit = findViewById(R.id.editTextHabit)
         spinnerFrequency = findViewById(R.id.spinnerFrequency)
         buttonAddHabit = findViewById(R.id.buttonAddHabit)
         buttonTrackGoals = findViewById(R.id.buttonTrackGoals)
 
-        // Populate spinner with habits
-        val habits = arrayOf("Exercise", "Read", "Meditate", "Eat Healthily")
-        val habitAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, habits)
-        habitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerHabit.adapter = habitAdapter
 
         // Populate spinner with frequencies
-        val frequencies = arrayOf("Daily", "Weekly", "Monthly")
-        val frequencyAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, frequencies)
-        frequencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerFrequency.adapter = frequencyAdapter
+//        val frequencies = arrayOf("Daily", "Weekly", "Monthly")
+
 
         buttonAddHabit.setOnClickListener {
-            // Add functionality to add a new habit and frequency dynamically
-            // Here, you can add code to create new UI elements for adding habits and frequencies
-            // For simplicity, I'm showing a toast message
-            Toast.makeText(this, "Add Habit Button Clicked", Toast.LENGTH_SHORT).show()
+            // Create a new EditText for the habit
+            val newEditTextHabit = EditText(this)
+            newEditTextHabit.layoutParams = editHabit.layoutParams
+            newEditTextHabit.hint = getString(R.string.enter_habit)
+
+            // Create a new Spinner for the frequency
+            val newSpinnerFrequency = Spinner(this)
+            val frequencies = resources.getStringArray(R.array.frequencies)
+            newSpinnerFrequency.layoutParams = spinnerFrequency.layoutParams
+            val frequencyAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, frequencies)
+            frequencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            newSpinnerFrequency.adapter = frequencyAdapter
+
+            // Add the new views to the layout container
+            findViewById<LinearLayout>(R.id.parentLayout).addView(newEditTextHabit)
+            findViewById<LinearLayout>(R.id.parentLayout).addView(newSpinnerFrequency)
         }
 
         buttonTrackGoals.setOnClickListener {

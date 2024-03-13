@@ -7,13 +7,7 @@
         <item>Four times a week</item>
         <item>Five times a week</item>
         <item>Six times a week</item>
-        <item>Everyday</item>
+        <item>daily</item>
     </string-array>
-    <string-array name="habits">
-        <item>Exercise</item>
-        <item>Read</item>
-        <item>Meditate</item>
-        <item>Eat Healthily</item>
-        <!-- Add more items as needed -->
-    </string-array>
+
 </resources>
