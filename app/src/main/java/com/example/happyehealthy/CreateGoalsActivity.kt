@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
+import com.google.firebase.database.FirebaseDatabase
 
 
 class CreateGoalsActivity : AppCompatActivity() {
@@ -52,10 +53,40 @@ class CreateGoalsActivity : AppCompatActivity() {
         }
 
         buttonTrackGoals.setOnClickListener {
-            // Add functionality to track goals
-            // Here, you can add code to navigate to the tracking goals activity
-            // For simplicity, I'm showing a toast message
-            Toast.makeText(this, "Track Goals Button Clicked", Toast.LENGTH_SHORT).show()
+            // Get the name from the EditText
+            val name = editTextName.text.toString().trim()
+
+            // Create a list to hold the habit and frequency data
+            val habitsList = mutableListOf<Pair<String, String>>()
+
+            // Iterate over the LinearLayout to get the data from each habit and frequency pair
+            val parentLayout = findViewById<LinearLayout>(R.id.parentLayout)
+            for (i in 0 until parentLayout.childCount step 2) {
+                val habitEditText = parentLayout.getChildAt(i) as EditText
+                val frequencySpinner = parentLayout.getChildAt(i + 1) as Spinner
+
+                val habit = habitEditText.text.toString().trim()
+                val frequency = frequencySpinner.selectedItem.toString()
+
+                habitsList.add(Pair(habit, frequency))
+            }
+
+            // Get the currently logged-in user's email
+            val email = MainActivity.auth.currentUser?.email
+
+            // Convert the email to a valid Firebase key by replacing '.' with ','
+            val emailKey = email!!.replace(".", ",")
+
+            // Send the data to Firebase under the user's email
+            val databaseReference = FirebaseDatabase.getInstance().reference.child("users").child(emailKey).child("goals").child(name)
+            databaseReference.setValue(habitsList)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Goals tracked successfully", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Failed to track goals: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
         }
+
     }
 }

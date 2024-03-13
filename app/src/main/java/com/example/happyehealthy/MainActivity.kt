@@ -6,6 +6,11 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.happyehealthy.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+
+// Inside onCreate method of MainActivity or Application class
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,12 +18,15 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         lateinit var auth: FirebaseAuth
+        lateinit var database: FirebaseDatabase
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth= FirebaseAuth.getInstance()
-
+//        database= FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        database = FirebaseDatabase.getInstance()
+//        val myRef = database.getReference("your_reference")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
