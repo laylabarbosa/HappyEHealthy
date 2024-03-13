@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.happyehealthy.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 // Inside onCreate method of MainActivity or Application class
 
@@ -33,20 +36,41 @@ class MainActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             val email = binding.edtxtEmail.text.toString()
             val password = binding.edtxtPass.text.toString()
-            if (email.isNotEmpty() && password.isNotEmpty())
-            {
-                MainActivity.auth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
-                    if (it.isSuccessful){
-                        Toast.makeText(this, "Login Successfull", Toast.LENGTH_LONG).show()
-                        //intent to home activity
-                        startActivity(Intent(this, CreateGoalsActivity :: class.java))
-                        finish()
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                MainActivity.auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val currentUser = MainActivity.auth.currentUser
+                        val email = currentUser?.email
+                        if (email != null) {
+                            // Convert the email to a valid Firebase key by replacing '.' with ','
+                            val emailKey = email.replace(".", ",")
+
+                            // Check if the user has a corresponding entry in the database for habits
+                            MainActivity.database.getReference("users").child(emailKey).child("goals").addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        // User has entry for habits, redirect to HomeActivity
+                                        startActivity(Intent(this@MainActivity, HomeActivity::class.java))
+                                    } else {
+                                        // No entry for habits, redirect to CreateGoalsActivity
+                                        startActivity(Intent(this@MainActivity, CreateGoalsActivity::class.java))
+                                    }
+                                    finish()
+                                }
+
+                                override fun onCancelled(databaseError: DatabaseError) {
+                                    Toast.makeText(this@MainActivity, "Failed to check habits: ${databaseError.message}", Toast.LENGTH_LONG).show()
+                                }
+                            })
+                        }
                     }
                 }.addOnFailureListener {
                     Toast.makeText(this, it.localizedMessage, Toast.LENGTH_LONG).show()
                 }
             }
         }
+
 
         binding.btnCreateAcc.setOnClickListener {
             startActivity(Intent(this, RegisterActivity :: class.java))
