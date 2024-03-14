@@ -1,12 +1,14 @@
 package com.example.happyehealthy
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat
@@ -86,8 +88,7 @@ class HomeActivity : AppCompatActivity() {
 
                         // Set the greeting dynamically
                         val calendar = Calendar.getInstance()
-                        val currentTime = calendar.get(Calendar.HOUR_OF_DAY)
-                        val timeGreeting = when (currentTime) {
+                        val timeGreeting = when (calendar.get(Calendar.HOUR_OF_DAY)) {
                             in 0..11 -> "Good Morning!"
                             in 12..15 -> "Good Afternoon!"
                             in 16..20 -> "Good Evening!"
@@ -99,6 +100,7 @@ class HomeActivity : AppCompatActivity() {
                         userSnapshot.children.forEach { habitSnapshot ->
                             // Get the habit name
                             val habitName = habitSnapshot.child("first").value.toString()
+                                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
                             // Create a horizontal LinearLayout to hold the habit name and toggle button
                             val horizontalLayout = LinearLayout(this@HomeActivity)
@@ -113,9 +115,14 @@ class HomeActivity : AppCompatActivity() {
                                 1f
                             )
 
+                            habitTextView.textSize = 24f
+                            habitTextView.setShadowLayer(0f, 10f, 10f, Color.BLACK)
+
                             // Create a toggle button for the habit
                             val toggleButton = androidx.appcompat.widget.AppCompatToggleButton(this@HomeActivity)
-                            toggleButton.text = "Toggle"
+                            toggleButton.textOff = "Complete"
+                            toggleButton.textOn = "Complete"
+                            toggleButton.isChecked = false // Ensure toggle starts unchecked
                             toggleButton.layoutParams = LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -126,10 +133,12 @@ class HomeActivity : AppCompatActivity() {
                                 // Handle habit selection here
                                 if (isChecked) {
                                     // Habit is selected
-                                    Toast.makeText(this@HomeActivity, "Habit selected: $habitName", Toast.LENGTH_SHORT).show()
+                                    toggleButton.setBackgroundColor(ContextCompat.getColor(this@HomeActivity, android.R.color.holo_green_light))
+                                    Toast.makeText(this@HomeActivity, "Congratulations1", Toast.LENGTH_SHORT).show()
                                 } else {
                                     // Habit is deselected
-                                    Toast.makeText(this@HomeActivity, "Habit deselected: $habitName", Toast.LENGTH_SHORT).show()
+                                    toggleButton.setBackgroundColor(ContextCompat.getColor(this@HomeActivity, android.R.color.transparent))
+                                    Toast.makeText(this@HomeActivity, "You still have time to: $habitName", Toast.LENGTH_SHORT).show()
                                 }
                             }
 
@@ -150,4 +159,6 @@ class HomeActivity : AppCompatActivity() {
             })
         }
     }
+
+
 }
