@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -50,10 +52,15 @@ class HomeActivity : AppCompatActivity() {
 
     private fun updateDateTime() {
         // Get current date and time
-        val dateTime = java.util.Calendar.getInstance().time.toString()
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("EE MM dd", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val dateTimeString = dateFormat.format(calendar.time)
+        val timeString = timeFormat.format(calendar.time)
 
         // Update textDateTime TextView
-        textDateTime.text = dateTime
+        val dateTimeTextView = "$dateTimeString\n$timeString"
+        textDateTime.text = dateTimeTextView
     }
 
     private fun loadHabitsFromDatabase() {
@@ -78,7 +85,15 @@ class HomeActivity : AppCompatActivity() {
                         val userName = userSnapshot.key.toString()
 
                         // Set the greeting dynamically
-                        textGreeting.text = "Hi $userName, Good Night"
+                        val calendar = Calendar.getInstance()
+                        val currentTime = calendar.get(Calendar.HOUR_OF_DAY)
+                        val timeGreeting = when (currentTime) {
+                            in 0..11 -> "Good Morning!"
+                            in 12..15 -> "Good Afternoon!"
+                            in 16..20 -> "Good Evening!"
+                            else -> "Good Night!"
+                        }
+                        textGreeting.text = "Hi $userName, $timeGreeting"
 
                         // Iterate through each habit under the user's goals
                         userSnapshot.children.forEach { habitSnapshot ->
@@ -135,5 +150,4 @@ class HomeActivity : AppCompatActivity() {
             })
         }
     }
-
 }

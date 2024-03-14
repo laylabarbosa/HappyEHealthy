@@ -36,10 +36,6 @@ class CreateGoalsActivity : AppCompatActivity() {
         btnLogout = findViewById(R.id.btn_logout)
 
 
-        // Populate spinner with frequencies
-//        val frequencies = arrayOf("Daily", "Weekly", "Monthly")
-
-
         buttonAddHabit.setOnClickListener {
             // Create a new EditText for the habit
             val newEditTextHabit = EditText(this)
