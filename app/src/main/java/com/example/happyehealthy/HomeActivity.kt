@@ -85,9 +85,26 @@ class HomeActivity : AppCompatActivity() {
                             // Get the habit name
                             val habitName = habitSnapshot.child("first").value.toString()
 
+                            // Create a horizontal LinearLayout to hold the habit name and toggle button
+                            val horizontalLayout = LinearLayout(this@HomeActivity)
+                            horizontalLayout.orientation = LinearLayout.HORIZONTAL
+
+                            // Create a TextView for the habit name
+                            val habitTextView = TextView(this@HomeActivity)
+                            habitTextView.text = habitName
+                            habitTextView.layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+
                             // Create a toggle button for the habit
                             val toggleButton = androidx.appcompat.widget.AppCompatToggleButton(this@HomeActivity)
-                            toggleButton.text = habitName
+                            toggleButton.text = "Toggle"
+                            toggleButton.layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
 
                             // Add click listener to handle habit selection
                             toggleButton.setOnCheckedChangeListener { _, isChecked ->
@@ -101,8 +118,12 @@ class HomeActivity : AppCompatActivity() {
                                 }
                             }
 
-                            // Add the toggle button to habitsLayout
-                            habitsLayout.addView(toggleButton)
+                            // Add the TextView and toggle button to the horizontal layout
+                            horizontalLayout.addView(habitTextView)
+                            horizontalLayout.addView(toggleButton)
+
+                            // Add the horizontal layout to habitsLayout
+                            habitsLayout.addView(horizontalLayout)
                         }
                     }
                 }
@@ -114,4 +135,5 @@ class HomeActivity : AppCompatActivity() {
             })
         }
     }
+
 }
