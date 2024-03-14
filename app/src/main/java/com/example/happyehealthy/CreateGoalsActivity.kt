@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 
 class CreateGoalsActivity : AppCompatActivity() {
+    //defining variables
     private lateinit var editTextName: EditText
     private lateinit var editHabit: EditText
     private lateinit var spinnerFrequency: Spinner
@@ -27,7 +28,7 @@ class CreateGoalsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_goals)
-
+        //linking variables to xml items
         editTextName = findViewById(R.id.editTextName)
         editHabit = findViewById(R.id.editTextHabit)
         spinnerFrequency = findViewById(R.id.spinnerFrequency)
@@ -35,7 +36,7 @@ class CreateGoalsActivity : AppCompatActivity() {
         buttonTrackGoals = findViewById(R.id.buttonTrackGoals)
         btnLogout = findViewById(R.id.btn_logout)
 
-
+        //creating more fiels for input based on user desire
         buttonAddHabit.setOnClickListener {
             // Create a new EditText for the habit
             val newEditTextHabit = EditText(this)
@@ -54,7 +55,7 @@ class CreateGoalsActivity : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.parentLayout).addView(newEditTextHabit)
             findViewById<LinearLayout>(R.id.parentLayout).addView(newSpinnerFrequency)
         }
-
+        //sending habits information to database
         buttonTrackGoals.setOnClickListener {
             // Get the name from the EditText
             val name = editTextName.text.toString().trim()
@@ -62,7 +63,7 @@ class CreateGoalsActivity : AppCompatActivity() {
             // Create a list to hold the habit and frequency data
             val habitsList = mutableListOf<Pair<String, String>>()
 
-            // Iterate over the LinearLayout to get the data from each habit and frequency pair
+            // Iterate over the Layout to get the data from each habit and frequency pair
             val parentLayout = findViewById<LinearLayout>(R.id.parentLayout)
             for (i in 0 until parentLayout.childCount step 2) {
                 val habitEditText = parentLayout.getChildAt(i) as EditText
@@ -74,7 +75,7 @@ class CreateGoalsActivity : AppCompatActivity() {
                 habitsList.add(Pair(habit, frequency))
             }
 
-            // Get the currently logged-in user's email
+            // Get the currently logged in user's email
             val email = MainActivity.auth.currentUser?.email
 
             // Convert the email to a valid Firebase key by replacing '.' with ','
@@ -91,7 +92,7 @@ class CreateGoalsActivity : AppCompatActivity() {
                     Toast.makeText(this, "Failed to track goals: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
         }
-
+        //longing out current user
         btnLogout.setOnClickListener {
             Firebase.auth.signOut()
             startActivity(Intent(this, MainActivity :: class.java))

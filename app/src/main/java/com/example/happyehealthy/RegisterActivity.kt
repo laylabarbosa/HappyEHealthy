@@ -18,14 +18,16 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnAccCreateAcc.setOnClickListener {
+            //handling input from user
             val email = binding.edtxtAccEmail.text.toString()
             val password = binding.edtxtAccPass.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty())
             {
+                //creating entry on database
                 auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
                     if (it.isSuccessful){
                         Toast.makeText(this, "Account created successfully", Toast.LENGTH_LONG).show()
-                        //intent to home activity
+                        //intent to create goals for new users
                         startActivity(Intent(this, CreateGoalsActivity :: class.java))
                         finish()
                     }

@@ -15,12 +15,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeActivity : AppCompatActivity() {
-
+//defining variables
     private lateinit var textGreeting: TextView
     private lateinit var textDateTime: TextView
     private lateinit var habitsLayout: LinearLayout
     private lateinit var btnLogout: Button
-
     private lateinit var databaseReference: DatabaseReference
     private lateinit var auth: FirebaseAuth
 
@@ -28,20 +27,20 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        // Initialize Firebase
+        // Initializing Firebase
         auth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance().reference
 
-        // Initialize views
+        // Initializing views
         textGreeting = findViewById(R.id.textGreeting)
         textDateTime = findViewById(R.id.textDateTime)
         habitsLayout = findViewById(R.id.habitsLayout)
         btnLogout = findViewById(R.id.btn_logout)
 
-        // Update date and time
+        // calling method to write date and time
         updateDateTime()
 
-        // Load habits from database
+        // calling method to load user's info from from database
         loadHabitsFromDatabase()
 
         // Logout button click listener
@@ -53,14 +52,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun updateDateTime() {
-        // Get current date and time
+        // Getting current date and time
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("EE MM dd", Locale.getDefault())
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         val dateTimeString = dateFormat.format(calendar.time)
         val timeString = timeFormat.format(calendar.time)
 
-        // Update textDateTime TextView
+        // Updating textDateTime TextView
         val dateTimeTextView = "$dateTimeString\n$timeString"
         textDateTime.text = dateTimeTextView
     }
@@ -69,10 +68,9 @@ class HomeActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         val email = currentUser?.email
         if (email != null) {
-            // Convert the email to a valid Firebase key by replacing '.' with ','
             val emailKey = email.replace(".", ",")
 
-            // Get reference to user's goals in the database using the email as the key
+            // Get reference to user's data in the database using the email as the key
             val goalsRef = databaseReference.child("users").child(emailKey)
 
             // Listen for changes in the goals data
@@ -83,10 +81,10 @@ class HomeActivity : AppCompatActivity() {
 
                     // Iterate through each child under the emailKey
                     dataSnapshot.children.forEach { userSnapshot ->
-                        // Get the username
+                        // Getting the username
                         val userName = userSnapshot.key.toString()
 
-                        // Set the greeting dynamically
+                        // Setting the greeting dynamically
                         val calendar = Calendar.getInstance()
                         val timeGreeting = when (calendar.get(Calendar.HOUR_OF_DAY)) {
                             in 0..11 -> "Good Morning!"
@@ -96,9 +94,9 @@ class HomeActivity : AppCompatActivity() {
                         }
                         textGreeting.text = "Hi $userName, $timeGreeting"
 
-                        // Iterate through each habit under the user's goals
+                        // Iterate through each habit under the user's data
                         userSnapshot.children.forEach { habitSnapshot ->
-                            // Get the habit name
+                            // Get the habit name and capitalize if necessary
                             val habitName = habitSnapshot.child("first").value.toString()
                                 .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
@@ -114,7 +112,7 @@ class HomeActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             )
-
+                            //making the habit font look nicer
                             habitTextView.textSize = 24f
                             habitTextView.setShadowLayer(0f, 10f, 10f, Color.BLACK)
 
@@ -130,13 +128,11 @@ class HomeActivity : AppCompatActivity() {
 
                             // Add click listener to handle habit selection
                             toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                                // Handle habit selection here
                                 if (isChecked) {
                                     // Habit is selected
                                     toggleButton.setBackgroundColor(ContextCompat.getColor(this@HomeActivity, android.R.color.holo_green_light))
                                     Toast.makeText(this@HomeActivity, "Congratulations1", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    // Habit is deselected
                                     toggleButton.setBackgroundColor(ContextCompat.getColor(this@HomeActivity, android.R.color.transparent))
                                     Toast.makeText(this@HomeActivity, "You still have time to: $habitName", Toast.LENGTH_SHORT).show()
                                 }

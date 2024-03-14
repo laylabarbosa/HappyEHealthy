@@ -26,11 +26,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //connecting to the firebase
         auth= FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        //validating user's credentials
         binding.btnLogin.setOnClickListener {
             val email = binding.edtxtEmail.text.toString()
             val password = binding.edtxtPass.text.toString()
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
+        //button for new users to create account
         binding.btnCreateAcc.setOnClickListener {
             startActivity(Intent(this, RegisterActivity :: class.java))
             finish()
