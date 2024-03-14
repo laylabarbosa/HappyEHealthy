@@ -34,11 +34,6 @@ class HomeActivity : AppCompatActivity() {
         habitsLayout = findViewById(R.id.habitsLayout)
         btnLogout = findViewById(R.id.btn_logout)
 
-        // Set greeting with user's name
-        val currentUser = auth.currentUser
-        val name = currentUser?.displayName ?: "User"
-        textGreeting.text = "Hi $name, Good Morning!"
-
         // Update date and time
         updateDateTime()
 
@@ -72,34 +67,43 @@ class HomeActivity : AppCompatActivity() {
             val goalsRef = databaseReference.child("users").child(emailKey)
 
             // Listen for changes in the goals data
-            goalsRef.addValueEventListener(object : ValueEventListener {
+            goalsRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     // Clear previous habit items
                     habitsLayout.removeAllViews()
 
-                    // Iterate through each goal (habit) under the goals node
-                    dataSnapshot.children.forEach { habitSnapshot ->
-                        // Get the habit name
-                        val habitName = habitSnapshot.key.toString()
+                    // Iterate through each child under the emailKey
+                    dataSnapshot.children.forEach { userSnapshot ->
+                        // Get the username
+                        val userName = userSnapshot.key.toString()
 
-                        // Create a toggle button for the habit
-                        val toggleButton = androidx.appcompat.widget.AppCompatToggleButton(this@HomeActivity)
-                        toggleButton.text = habitName
+                        // Set the greeting dynamically
+                        textGreeting.text = "Hi $userName, Good Night"
 
-                        // Add click listener to handle habit selection
-                        toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                            // Handle habit selection here
-                            if (isChecked) {
-                                // Habit is selected
-                                Toast.makeText(this@HomeActivity, "Habit selected: $habitName", Toast.LENGTH_SHORT).show()
-                            } else {
-                                // Habit is deselected
-                                Toast.makeText(this@HomeActivity, "Habit deselected: $habitName", Toast.LENGTH_SHORT).show()
+                        // Iterate through each habit under the user's goals
+                        userSnapshot.children.forEach { habitSnapshot ->
+                            // Get the habit name
+                            val habitName = habitSnapshot.child("first").value.toString()
+
+                            // Create a toggle button for the habit
+                            val toggleButton = androidx.appcompat.widget.AppCompatToggleButton(this@HomeActivity)
+                            toggleButton.text = habitName
+
+                            // Add click listener to handle habit selection
+                            toggleButton.setOnCheckedChangeListener { _, isChecked ->
+                                // Handle habit selection here
+                                if (isChecked) {
+                                    // Habit is selected
+                                    Toast.makeText(this@HomeActivity, "Habit selected: $habitName", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // Habit is deselected
+                                    Toast.makeText(this@HomeActivity, "Habit deselected: $habitName", Toast.LENGTH_SHORT).show()
+                                }
                             }
-                        }
 
-                        // Add the toggle button to habitsLayout
-                        habitsLayout.addView(toggleButton)
+                            // Add the toggle button to habitsLayout
+                            habitsLayout.addView(toggleButton)
+                        }
                     }
                 }
 
