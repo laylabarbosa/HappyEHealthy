@@ -89,6 +89,7 @@ class CreateGoalsActivity : AppCompatActivity() {
             databaseReference.setValue(habitsList)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Goals tracked successfully", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@CreateGoalsActivity, HomeActivity::class.java))
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "Failed to track goals: ${it.message}", Toast.LENGTH_SHORT).show()
