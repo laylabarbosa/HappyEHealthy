@@ -131,7 +131,7 @@ class HomeActivity : AppCompatActivity() {
                                 if (isChecked) {
                                     // Habit is selected
                                     toggleButton.setBackgroundColor(ContextCompat.getColor(this@HomeActivity, android.R.color.holo_green_light))
-                                    Toast.makeText(this@HomeActivity, "Congratulations1", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@HomeActivity, "Congratulations, $habitName is done!", Toast.LENGTH_SHORT).show()
                                 } else {
                                     toggleButton.setBackgroundColor(ContextCompat.getColor(this@HomeActivity, android.R.color.transparent))
                                     Toast.makeText(this@HomeActivity, "You still have time to: $habitName", Toast.LENGTH_SHORT).show()
