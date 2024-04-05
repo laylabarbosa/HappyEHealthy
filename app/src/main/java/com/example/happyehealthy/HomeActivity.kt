@@ -36,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
         textDateTime = findViewById(R.id.textDateTime)
         habitsLayout = findViewById(R.id.habitsLayout)
         btnLogout = findViewById(R.id.btn_logout)
+        val btnSteps = findViewById<Button>(R.id.btn_steps)
 
         // calling method to write date and time
         updateDateTime()
@@ -49,6 +50,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+        btnSteps.setOnClickListener {
+            startActivity(Intent(this, StepsActivity::class.java))
+        }
+
     }
 
     private fun updateDateTime() {

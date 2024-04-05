@@ -8,4 +8,6 @@
     <string name="logout">Logout</string>
     <string name="hi_user_good_morning">Hi User, Good Morning!</string>
     <string name="date_and_time">Date and Time</string>
+    <string name="steps">Steps</string>
+    <string name="step_counter_sensor_not_available_on_this_device">Step counter sensor not available on this device</string>
 </resources>
